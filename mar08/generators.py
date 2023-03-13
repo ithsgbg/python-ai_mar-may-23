@@ -4,7 +4,7 @@ def my_range(n):
     while i < n:
         yield i
         i += 1
-    return 0
+
 
 g = my_range(10)
 for i in g:

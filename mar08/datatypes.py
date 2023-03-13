@@ -1,16 +1,16 @@
 # Python Basic Data Types
 
-# Integer
-# Float
-# String
-# Bool
+# Integer - Immutable
+# Float - Immutable
+# String - Immutable
+# Bool - Immutable
 
-# None
+# None - Immutable
 
-# List - []
-# Tuple - ()
-# Dict - {}
-# Set - {}
+# List - [] - Mutable
+# Tuple - () - Immutable
+# Dict - {} - Mutable
+# Set - {} - Mutable
 
 person = {
     'name': 'Lisa',

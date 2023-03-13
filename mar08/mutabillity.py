@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 # x = 1000
 # y = 1000
 
@@ -19,7 +21,7 @@
 # print(id(name2))
 
 values1 = [1, 2, 3, 4]
-values2 = values1.copy()
+values2 = deepcopy(values1)
 
 print(id(values1))
 print(id(values2))
