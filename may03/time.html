@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<!-- #BeginTemplate "../dwt/timers-and-clocks.dwt" -->
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+<!-- #BeginEditable "doctitle" -->
+<title>Online Clock - Digital</title>
+
+<meta name="description" content="Digital online clock with seconds. Full screen with big digits. Format options are 12h and 24h." />
+
+<meta name="keywords" content="large free online real time digital clock with seconds full screen and with large digits 12h 24h" />
+
+<!-- bo fb-metas -->
+	<meta property="og:title" content="Online Digital Clock" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://time-time.net/timer/digital-clock.php" />
+	<meta property="og:image" content="http://time-time.net/images/timer/200/digital-tube-200x200.jpg" />
+	<meta property="og:site_name" content="Time-time.net" />
+	<meta property="fb:admins" content="100000179121787" />
+	<meta property="og:description" content="Digital online clock with seconds. Full screen with big digits."/>
+<!-- eo fb-metas -->
+<!-- #EndEditable -->
+
+<link href="../css/menugold.css" rel="stylesheet" type="text/css" />
+<link href="../css/styles-BIG.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../attachments/js.js"></script>
+
+<!-- #BeginEditable "styles" -->
+<style type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#digital_area {
+	margin-top: 70px;
+	margin-bottom: 490px;
+}
+#timenow {
+	color: #000000;
+	font-size: 145px;
+	text-align: center;
+}
+#computertime {
+	font-size: 12px;
+	color: #CCCCCC;
+	margin-left: 9px;
+}
+#timeblock {
+}
+#digital_head {
+	padding: 0px;
+	border: 5px solid #F3F3FF;
+	width: 210px;
+	margin-right: auto;
+	margin-bottom: 50px;
+	margin-left: auto;
+}
+#digital_heading {
+	font-style: italic;
+	font-weight: 100;
+	font-variant: small-caps;
+	text-transform: capitalize;
+	font-size: 17px;
+	text-align: center;
+}
+#digital_text {
+	font-size: 13px;
+	color: #9B9B9B;
+	font-style: italic;
+	margin-top: 3px;
+	text-align: center;
+}
+#datenow {
+	text-align: center;
+}
+#magicline {
+	border: 1px solid #C0C0C0;
+	padding: 5px;
+}
+#computertime {
+	font-size: 12px;
+	color: #CCCCCC;
+	text-align: center;
+}
+#full_screen_box {
+	width: 90px;
+	margin-left: 700px;
+	margin-bottom: 1500px;
+	margin-top: 30px;
+}
+.full_screen_box_style {
+	margin: 0px 7px 7px 2px;
+	color: #000000;
+	line-height: 15px;
+	background-color: #C4DBFF;
+	padding: 2px 2px 0px 2px;
+	font-size: 12px;
+	font-family: Perpetua, Nyala, Aparajita, "Estrangelo Edessa", "Arial Narrow";
+}
+.full_screen_box_style:hover {
+	background-color: #1484F3;
+	color: #FFFFFF;
+}
+</style>
+<!-- #EndEditable -->
+<!-- #BeginEditable "script" -->
+<script type="text/javascript">
+<!--
+// To be windows.onloaded.
+function start(){
+	get12h24();
+	digital();
+}
+window.onload = start;
+
+// Gets computer time.
+function digital() {
+	var d = new Date();
+	// Time:
+	var hour = d.getHours();
+	var min = d.getMinutes();
+	var sec = d.getSeconds();
+//	hour = digitzero(hour);
+//	min = digitzero(min);
+//	sec = digitzero(sec);
+	// Date:
+	var daytxt=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var monthtxt=["January","February","March","April","May","June","July","August","September","October","November","December"];
+	var day = d.getDay();
+	var date = d.getDate();
+	var month = d.getMonth();
+	var year = d.getFullYear();
+	var daytxtlong = daytxt[day];
+	var monthtxtlong = monthtxt[month];
+
+	if (display == "format12") {	
+		document.getElementById('timenow').innerHTML = hour12(hour)+":"+digitzero(min)+":"+digitzero(sec)+" "+hour12ampm(hour);
+	}
+	else if (display == "format24") {
+		document.getElementById('timenow').innerHTML = digitzero(hour)+":"+digitzero(min)+":"+digitzero(sec);
+	}
+
+	document.getElementById('datenow').innerHTML = daytxtlong+", "+date+" "+monthtxtlong+" "+year;
+	
+	// Call computer time every 0.5 sec.
+	var calltime = setTimeout('digital()', 500);
+}
+
+// Change hours to 12h format.
+function hour12(num){
+	if (num > 12) {
+		num = num - 12;
+	}
+	if (num == 0) {
+		num = num+"0";
+	}
+	return num;
+}
+
+// Give am/pm ending to 12h format.
+function hour12ampm(num){
+	if (num >= 12) {
+		return "pm";
+	}
+	else {
+		return "am";
+	}
+}
+
+// Add zero for hour, min and sec if smaller than 10.
+function digitzero(digit) {
+	if (digit <= 9) {
+		digit = "0" + digit;
+	}
+	return digit;
+}
+
+// ---
+
+function setCookie24h(){
+			setCookie('change12h24','24',365);
+			var change12h24 = getCookie("change12h24");
+			if (change12h24 == null) {
+				alert("Your current browser settings indicate that cookies are disabled. Cookies are needed to activate 24h format.");
+				location.reload();
+			}
+			else {
+				location.reload();
+			}
+}
+
+function setCookie12h(){
+			setCookie('change12h24','12',365);
+			var change12h24 = getCookie("change12h24");
+			if (change12h24 == null) {
+				alert("Your current browser settings indicate that cookies are disabled. Cookies are needed to change the time format.");
+				location.reload();
+			}
+			else {
+				location.reload();
+			}
+}
+
+function get12h24(){
+	var change12h24 = getCookie("change12h24");
+	if (change12h24 != null) {
+		if (change12h24 == "12") {
+			display = "format12";
+			document.getElementById("radio12h").checked=true;
+			radioOn();
+		}
+		else if (change12h24 == "24") {
+			display = "format24";
+			document.getElementById("radio24h").checked=true;
+			radioOn();
+		}
+	}
+	else {
+		display = "format12";
+		document.getElementById("radio12h").checked=true;
+		radioOn();
+	}
+}
+
+function radioOn() {
+	var theRadios = document.getElementsByName('radio12h24');
+	for(var i = 0; i < theRadios.length; i++) {
+		theRadios[i].parentNode.className = 'h2412off';
+		theRadios[i].onclick = function() {
+			radioOn();
+		}
+		if(theRadios[i].checked == 1) {
+			theRadios[i].parentNode.className = 'h2412on';
+		}
+	}
+}
+
+//-->
+</script>
+<!-- #EndEditable -->
+<!-- bo sharethis NEW SOCIALS -->
+<script type="text/javascript">var switchTo5x=false;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "c1ee14af-daa3-4395-8842-295b3b1216ed", doNotHash: true, doNotCopy: false, hashAddressBar: false});</script>
+<!-- eo sharethis NEW SOCIALS -->
+<!-- bo g analytics -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26614807-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+function FP_preloadImgs() {//v1.0
+ var d=document,a=arguments; if(!d.FP_imgs) d.FP_imgs=new Array();
+ for(var i=0; i<a.length; i++) { d.FP_imgs[i]=new Image; d.FP_imgs[i].src=a[i]; }
+}
+</script>
+<!-- eo g analytics -->
+</head>
+<body>
+<!-- bo fb NEW SOCIALS -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!-- eo fb NEW SOCIALS -->
+
+<!-- twitter only code in where button is NEW SOCIALS -->
+
+<!-- bo g+ NEW SOCIALS -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<!-- eo g+ NEW SOCIALS -->
+
+<!-- #BeginEditable "audio-preload" -->
+<!-- #EndEditable -->
+
+<div id="background">
+<div id="wrapper">
+
+<div id="header">
+		<div id="white_box">
+			<a href="http://time-time.net">
+				<img alt="" src="../images/time-time.net-logo.gif" height="50" width="213" />
+			</a>
+		</div><!-- end of white_box -->
+<!-- #BeginEditable "12h24" -->
+
+		<div id="sky_right">
+			<div id="radio_side">
+				<form name="switch12h24_form">
+					<label class="h2412off"><input type="radio" name="radio12h24" id="radio12h" value="12h" class="h2412_button"><a onclick="setCookie12h()">12h</a></label>
+					<label class="h2412off"><input type="radio" name="radio12h24" id="radio24h" value="24h" class="h2412_button"><a onclick="setCookie24h()">24h</a></label>
+				</form>
+			</div><!-- eo radio_side -->
+		</div><!-- eo sky_right -->
+
+<!-- #EndEditable -->
+		<div id="menu_banner">
+			<div id="themenu">
+				<label for="show-menu" class="show-menu">Show Menu</label>
+			    <input type="checkbox" id="show-menu" role="button">
+		    	<ul id="menu_invisible">
+		        	<li><a href="http://time-time.net">Home</a></li>
+		        	<li><a href="../time-news/time-news.php">Time News &nbsp; <i class="menu_arrow menu_down"></i></a>
+		        	    <ul class="menu_hidden">
+		        	        <li><a href="../time-news/time-news.php">Time News</a></li>
+		        	        <li><a href="../articles/daylight-saving-time-DST.php">Daylight Saving Time</a></li>
+		        	        <li><a href="../articles/pros-and-cons-of-dst.php">Pros and Cons of DST</a></li>
+		        	        <li><a href="../articles/utc-or-gmt.php">UTC or GMT</a></li>
+		        	    </ul>
+		        	</li>
+		        	<li><a href="../timer/timers-and-clocks.php">Timers &nbsp; <i class="menu_arrow menu_down"></i></a>
+		        	    <ul class="menu_hidden">
+		        	        <li><a href="../timer/countdown-timer.php">Countdown Timer</a></li>
+		        	        <li><a href="../timer/stopwatch.php">Stopwatch</a></li>
+		        	    </ul>
+		        	</li>
+		        	<li><a href="../timer/timers-and-clocks.php">Clocks &nbsp; <i class="menu_arrow menu_down"></i></a>
+		        	    <ul class="menu_hidden menu_clocks">
+		        	        <li><a href="../timer/alarm-clock.php">Alarm Clock</a></li>
+		        	        <li><a href="../timer/digital-clock.php">Digital Clock</a></li>
+		        	        <li><a href="../timer/online-clock-analog-and-digital.php">Analog and Digital Clock</a></li>
+		        	        <li><a href="../timer/gmt-greenwich-mean-time.php">GMT</a></li>
+		        	    </ul>
+		        	</li>
+		        	<li class="menu_timezones"><a href="../times/time-zones/time-zone-information.php">Time Zones &nbsp; <i class="menu_arrow menu_down"></i></a>
+		        	    <ul class="menu_hidden menu_timezones2">
+		        	        <li><a href="../times/time-zones/world-time-zones.php">World Time Zones</a></li>
+		        	        <li><a href="../times/time-zones/usa-canada/canada-time-zone-map.php">Canada Time Zone Map</a></li>
+		        	        <li><a href="../times/time-zones/usa-canada/usa-time-zone-map.php">USA Time Zone Map</a></li>
+		        	        <li><a href="../times/time-zones/americas/mexico-time-zone-map.php">Mexico Time Zone Map</a></li>
+		        	        <li><a href="../times/time-zones/usa-canada/time-zones-in-usa-and-canada.php">USA &amp; Canada Time Zones &nbsp; <i class="menu_arrow menu_down"></i></a>
+		        	        	<ul class="menu_hidden menu_timezones3">
+		        	        		<li><a href="../times/time-zones/usa-canada/time-zones-in-usa-and-canada.php">USA &amp; Canada Time Zones</a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-newfoundland-time-nst.php">NST / NDT <span class="menu_zone_exp">(Newfoundland Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-atlantic-time-ast.php">AST / ADT <span class="menu_zone_exp">(Atlantic Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-eastern-time-est.php">EST / EDT <span class="menu_zone_exp">(Eastern Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-central-time-cst.php">CST / CDT <span class="menu_zone_exp">(Central Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-mountain-time-mst.php">MST / MDT <span class="menu_zone_exp">(Mountain Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-pacific-time-pst.php">PST / PDT <span class="menu_zone_exp">(Pacific Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-alaska-time-akst.php">AKST / AKDT <span class="menu_zone_exp">(Alaska Time)</span></a></li>
+		        	        		<li><a href="../times/time-zones/usa-canada/current-hawaii-time-hast.php">HAST / HADT <span class="menu_zone_exp">(Hawaii-Aleutian Time)</span></a></li>
+		        	        	</ul>
+		        	        </li>
+		        	    </ul>
+		        	</li>
+			    </ul>
+			</div><!-- eo themenu -->
+<!-- Menu search-->
+<!--			<div id="menu_b_search">-->
+				<!-- Equal input and submit fields: -->
+				<!-- For IE7 input field: -->
+<!--				<!--[if lte IE 7]>
+				<style>
+						.eq_submit .eq_search {zoom:1;}
+						.eq_submit .eq_search .textfield {float:left; display:inline;}
+				</style>
+				<![endif]-->
+<!--				<div class="eq_submit">
+					<div class="eq_search">
+						<form id="customers" name="customers" action="../livesearch/result.php" method="post">
+							<span class="input_wrap">
+								<input type="search" class="textfield" name="input_area" id="input_area" placeholder=" Search City or Country"	
+									autocomplete="off"
+									onkeyup="search_when_out(this.value)" 
+									onmouseover="document.getElementById('livesearch').style.visibility='visible';"
+									onmouseout="document.getElementById('livesearch').style.visibility='visible';"							
+								/>
+							</span>--> <!-- eo inputWrap -->
+<!--							<span class="submit_wrap"><input type="submit" class="submit" value="Search" /></span>
+						</form>
+					</div>--><!-- eo eq_search -->
+<!--				</div>--><!-- eo eq_submit -->
+<!--				<div id="livesearch"
+					onmouseover="document.getElementById('livesearch').style.visibility='visible';"
+					onmouseout="document.getElementById('livesearch').style.visibility='hidden';" >
+				</div>--><!-- eo livesearch -->
+<!--			</div>--><!-- eo menu_b_search -->
+<!-- eo Menu search-->
+
+		</div><!-- eo menu_banner -->
+</div><!-- end of header -->
+
+<!-- bo POPULARITY -->
+<div id="popularity_bar">
+	<div id="in_p_bar">
+		<div class="popularity_buttons pop_twitter">
+			<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+		</div><!-- eo popularity_buttons -->
+		<div class="popularity_buttons pop_xing">
+			<div data-type="xing/share" data-counter="right"></div>
+			<script>
+			  ;(function (d, s) {
+			    var x = d.createElement(s),
+			      s = d.getElementsByTagName(s)[0];
+			      x.src = "https://www.xing-share.com/plugins/share.js";
+			      s.parentNode.insertBefore(x, s);
+			  })(document, "script");
+			</script>
+		</div><!-- eo popularity_buttons -->
+		<div class="popularity_buttons pop_linkedin">
+			<script src="https://platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+			<script type="IN/Share"></script>
+		</div><!-- eo popularity_buttons -->
+		<div class="popularity_buttons pop_sharethis">
+			<span class='st_sharethis_hcount' displayText='ShareThis'></span>
+		</div><!-- eo popularity_buttons -->
+		<div class="popularity_buttons pop_fb">
+			<div class="fb-like" data-width="90" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+		</div><!-- eo popularity_buttons -->
+	</div><!-- eo in_p_bar -->
+</div><!-- eo popularity_bar -->
+<!-- eo POPULARITY -->
+
+<!-- bo NEW SOCIALS -->
+<!--
+<div id="social_bar">
+	<div id="socials">
+		<div class="social social_fb_tw_gplus">
+			<div id="pop_fb_trigger"><img class="social_img" alt="" src="../images/social-icons/fb-icon.png" width="22" height="22" onmouseover="document.getElementById('pop_fb_box').style.visibility = 'visible';" onmouseout="document.getElementById('pop_fb_box').style.visibility = 'hidden';" />
+				<div id="pop_fb_box" onmouseover="document.getElementById('pop_fb_box').style.visibility = 'visible';" onmouseout="document.getElementById('pop_fb_box').style.visibility = 'hidden';">
+					<div id="fb_position">
+						<div class="fb-like" data-width="225" data-show-faces="false" data-send="false" onmouseover="document.getElementById('pop_fb_box').style.visibility = 'visible';"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+			
+		<div class="social social_fb_tw_gplus">
+			<div id="pop_tweet_trigger"><img class="social_img" alt="" src="../images/social-icons/twitter-icon.png" width="22" height="22" onmouseover="document.getElementById('pop_tweet_box').style.visibility = 'visible';" onmouseout="document.getElementById('pop_tweet_box').style.visibility = 'hidden';" />
+				<div id="pop_tweet_box" onmouseover="document.getElementById('pop_tweet_box').style.visibility = 'visible';" onmouseout="document.getElementById('pop_tweet_box').style.visibility = 'hidden';">
+					<div id="tweet_position">
+						<a href="https://twitter.com/share" class="twitter-share-button" onmouseover="document.getElementById('pop_tweet_box').style.visibility = 'visible';" >Tweet</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="social social_fb_tw_gplus">
+			<div id="pop_gplus_trigger"><img class="social_img" alt="" src="../images/social-icons/gplus-icon.png" width="22" height="22" onmouseover="document.getElementById('pop_gplus_box').style.display = 'block';" onmouseout="document.getElementById('pop_gplus_box').style.display = 'none';" />
+				<div id="pop_gplus_box" onmouseover="document.getElementById('pop_gplus_box').style.display = 'block';" onmouseout="document.getElementById('pop_gplus_box').style.display = 'none';">
+					<div id="gplus_position">
+						<div class="g-plusone" data-size="medium" onmouseover="document.getElementById('pop_gplus_box').style.display = 'block';" ></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="social social_sharethis">
+			<span class='st_sharethis_hcount' displayText='ShareThis'></span>
+		</div>
+	</div>
+</div>
+-->
+<!-- eo NEW SOCIALS -->
+
+<div id="container">
+<!-- #BeginEditable "container" -->
+	
+
+
+		<div id="digital_area">
+			<div id="digital_head">
+				<div id="magicline">
+					<h1 id="digital_heading">Online Clock - Digital</h1>
+					<p id="digital_text">Digital online clock in 12h/24h formats.</p>
+				</div><!-- eo magicline -->
+			</div><!-- eo digital_head -->
+			<div id="timeblock">
+				<p id="computertime">Computer Time:</p>
+				<div id="timenow"></div>
+				<div id="datenow"></div>
+			</div><!-- eo timeblock -->
+
+			<div id="full_screen_box">
+				<input type="button" name="" class="full_screen_box_style" onclick="location.href='digital-clock-fullscreen.php'" value="Full Screen" />
+			</div>
+		</div><!-- eo digital_area -->
+	
+
+
+<!-- #EndEditable -->
+</div><!-- end of container -->
+
+	<div id="footer">
+		<div id="footer_box">
+			<div id="footer_line1">
+				<p><a class="awhite" href="../primary-info/about-us.php" rel="nofollow">about us</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				<a class="awhite" href="../primary-info/privacy-policy.php" rel="nofollow">privacy policy</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a class="awhite" href="../primary-info/faq.php" rel="nofollow">faq</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				<a class="awhite" href="../primary-info/terms-of-use.php" rel="nofollow">terms of use</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+				<a class="awhite" href="../primary-info/contact-us.php" rel="nofollow">contact us</a></p>
+			<!-- end of footer_line1 --></div>
+			<div id="footer_line2">
+				<p>time-time.net © 2011-2023</p>
+			</div><!-- end of footer_line2 -->
+		</div><!-- end of footer_box -->
+	</div><!-- end of footer -->
+
+</div><!-- end of wrapper -->
+</div><!-- eo background -->
+
+</body>
+<!-- #EndTemplate -->
+</html>
